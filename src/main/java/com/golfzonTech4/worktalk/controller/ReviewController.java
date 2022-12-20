@@ -2,7 +2,9 @@ package com.golfzonTech4.worktalk.controller;
 
 import com.golfzonTech4.worktalk.domain.Qna;
 import com.golfzonTech4.worktalk.dto.review.ReviewInsertDto;
+import com.golfzonTech4.worktalk.dto.review.ReviewPagingDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewUpdateDto;
+import com.golfzonTech4.worktalk.repository.ListResult;
 import com.golfzonTech4.worktalk.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,16 +74,17 @@ public class ReviewController {
     }
 
     //사무공간상세페이지에서 후기 리스트 출력
-    @Operation(summary = "후기 목록 조회 요청", description = "사무공간 상세페이지에서 후기 목록을 조회합니다.")
+    @Operation(summary = "해당 사무공간 후기 목록 조회 요청", description = "사무공간 상세페이지에서 후기 목록을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-    @GetMapping("/spaceOne/{spaceId}/reviews")
-    public ResponseEntity reviewListBySpace(@PathVariable("spaceId") Long spaceId) {
-        return ResponseEntity.ok(reviewService.getReviewsBySpace(spaceId));
+    @GetMapping("/spaceOne/reviews")
+    public ResponseEntity<ListResult> reviewListBySpace(@ModelAttribute ReviewPagingDto dto) {
+        PageRequest pageRequest = PageRequest.of(dto.getPageNum(), 5);
+        return ResponseEntity.ok(reviewService.getReviewsBySpace(pageRequest, dto.getSpaceId()));
     }
 
     //마이페이지에서 후기 리스트 출력

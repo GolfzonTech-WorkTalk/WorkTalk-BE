@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,5 +31,8 @@ public class CustomerCenter extends BaseTimeEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private CcType type;
+
+    @OneToMany(mappedBy = "customerCenter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CustomerComment> customerComments;
 
 }

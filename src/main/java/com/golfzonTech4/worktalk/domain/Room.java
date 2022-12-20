@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Setter
@@ -40,5 +41,8 @@ public class Room implements Serializable {
 
     @Column(name = "OFFERING_OPTION", nullable = true, length = 500)
     private String offeringOption;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoomImg> roomImgList;
 
 }

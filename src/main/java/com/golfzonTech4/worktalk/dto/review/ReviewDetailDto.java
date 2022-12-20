@@ -1,11 +1,10 @@
 package com.golfzonTech4.worktalk.dto.review;
 
-import com.golfzonTech4.worktalk.domain.QnaType;
 import com.golfzonTech4.worktalk.domain.RoomType;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.eclipse.jdt.internal.compiler.ast.DoubleLiteral;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +34,7 @@ public class ReviewDetailDto {
     private RoomType roomType;
 
     public ReviewDetailDto(Long reviewId, Long reservationId, Long memberId, String content, LocalDateTime lastModifiedDate, Double grade, String spaceName, String roomName
-    , RoomType roomType) {
+            , RoomType roomType) {
         this.reviewId = reviewId;
         this.reservationId = reservationId;
         this.memberId = memberId;
@@ -47,6 +46,7 @@ public class ReviewDetailDto {
         this.roomType = roomType;
     }
 
+    @QueryProjection
     public ReviewDetailDto(Long reviewId, Long reservationId, Long memberId, String writer, String content, LocalDateTime lastModifiedDate, Double grade) {
         this.reviewId = reviewId;
         this.reservationId = reservationId;

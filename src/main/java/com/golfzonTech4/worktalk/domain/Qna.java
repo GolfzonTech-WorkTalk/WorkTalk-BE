@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,5 +31,8 @@ public class Qna extends BaseTimeEntity implements Serializable {
 
     @Column(name = "CONTENT", nullable = false, length = 1000)
     private String content;
+
+    @OneToMany(mappedBy = "qna", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QnaComment> qnaComments;
 
 }

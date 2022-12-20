@@ -51,7 +51,13 @@ public class Space implements Serializable {
     @Column(name = "SPACE_STATUS", length = 20)
     private String spaceStatus;
 
-    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Room> rooms;
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SpaceImg> spaceImgList;
+
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Qna> qnas;
 
 }
