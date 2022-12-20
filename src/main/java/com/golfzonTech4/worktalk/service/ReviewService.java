@@ -1,16 +1,20 @@
 package com.golfzonTech4.worktalk.service;
 
-import com.golfzonTech4.worktalk.domain.*;
-import com.golfzonTech4.worktalk.dto.qna.QnaDetailDto;
+import com.golfzonTech4.worktalk.domain.Member;
+import com.golfzonTech4.worktalk.domain.Reservation;
+import com.golfzonTech4.worktalk.domain.Review;
 import com.golfzonTech4.worktalk.dto.review.ReviewDetailDto;
-import com.golfzonTech4.worktalk.dto.review.ReviewUpdateDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewInsertDto;
-import com.golfzonTech4.worktalk.repository.ReviewRepository;
+import com.golfzonTech4.worktalk.dto.review.ReviewUpdateDto;
+import com.golfzonTech4.worktalk.repository.ListResult;
 import com.golfzonTech4.worktalk.repository.reservation.ReservationRepository;
+import com.golfzonTech4.worktalk.repository.review.ReviewRepository;
 import com.golfzonTech4.worktalk.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +33,12 @@ public class ReviewService {
     private final MemberService memberService;
 
     @Transactional
-    public Review createReview(ReviewInsertDto dto){
+    public Review createReview(ReviewInsertDto dto) {
         log.info("createReview()....");
 
         Optional<String> member = SecurityUtil.getCurrentUsername();
 
-        if(!member.isPresent()) throw new EntityNotFoundException("Member Not Found");
+        if (!member.isPresent()) throw new EntityNotFoundException("Member Not Found");
 
         Member findMember = memberService.findByName(member.get());
         Reservation findReservation = reservationRepository.findByReserveId(dto.getReserveId());
@@ -42,7 +46,7 @@ public class ReviewService {
         BeanUtils.copyProperties(dto, reviewToCreate);
         reviewToCreate.setMember(findMember);
         reviewToCreate.setReservation(findReservation);
-        return  reviewRepository.save(reviewToCreate);
+        return reviewRepository.save(reviewToCreate);
     }
 
     @Transactional
@@ -64,7 +68,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public void deleteReview(Long reviewId){
+    public void deleteReview(Long reviewId) {
         log.info("deleteReview()....");
 
         Optional<String> currentUsername = SecurityUtil.getCurrentUsername();
@@ -80,9 +84,10 @@ public class ReviewService {
             throw new EntityNotFoundException("삭제 권한이 없습니다.");
     }
 
-    public List<ReviewDetailDto> getReviewsBySpace(Long spaceId) {
+    public ListResult getReviewsBySpace(PageRequest pageRequest, Long spaceId) {
         log.info("getReviewsBySpace()....");
-        return reviewRepository.findReviewsDtoListBySpaceId(spaceId);
+        PageImpl<ReviewDetailDto> result = reviewRepository.findReviewsDtoListBySpaceId(pageRequest, spaceId);
+        return new ListResult(result.getTotalElements(), result.getContent());
     }
 
     public List<ReviewDetailDto> getMyReviews() {
