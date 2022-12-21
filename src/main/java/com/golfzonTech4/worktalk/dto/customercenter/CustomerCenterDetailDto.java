@@ -17,6 +17,8 @@ public class CustomerCenterDetailDto {
 
     private Long memberId;
 
+    private String writer;
+
     private String title;
 
     private String content;
@@ -32,9 +34,10 @@ public class CustomerCenterDetailDto {
     private LocalDateTime ccLastModifiedDate;
 
     @QueryProjection
-    public CustomerCenterDetailDto(Long ccId, Long memberId, String title, String content, CcType type, LocalDateTime lastModifiedDate, Long ccCommentId, String ccContent, LocalDateTime ccLastModifiedDate) {
+    public CustomerCenterDetailDto(Long ccId, Long memberId, String writer, String title, String content, CcType type, LocalDateTime lastModifiedDate, Long ccCommentId, String ccContent, LocalDateTime ccLastModifiedDate) {
         this.ccId = ccId;
         this.memberId = memberId;
+        this.writer = writer;
         this.title = title;
         this.content = content;
         this.type = type;

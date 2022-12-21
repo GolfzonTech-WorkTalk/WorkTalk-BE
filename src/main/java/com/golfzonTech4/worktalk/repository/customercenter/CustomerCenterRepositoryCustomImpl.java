@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.golfzonTech4.worktalk.domain.QCustomerCenter.customerCenter;
 import static com.golfzonTech4.worktalk.domain.QCustomerComment.customerComment;
+import static com.querydsl.core.types.dsl.Expressions.asString;
 
 @Slf4j
 public class CustomerCenterRepositoryCustomImpl implements CustomerCenterRepositoryCustom {
@@ -35,6 +36,7 @@ public class CustomerCenterRepositoryCustomImpl implements CustomerCenterReposit
                         new QCustomerCenterDetailDto(
                                 customerCenter.ccId,
                                 customerCenter.member.id,
+                                customerCenter.member.name,
                                 customerCenter.title,
                                 customerCenter.content,
                                 customerCenter.type,
@@ -70,6 +72,7 @@ public class CustomerCenterRepositoryCustomImpl implements CustomerCenterReposit
                         new QCustomerCenterDetailDto(
                                 customerCenter.ccId,
                                 customerCenter.member.id,
+                                asString(name).as("name"),
                                 customerCenter.title,
                                 customerCenter.content,
                                 customerCenter.type,
