@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -90,12 +89,13 @@ public class ReviewService {
         return new ListResult(result.getTotalElements(), result.getContent());
     }
 
-    public List<ReviewDetailDto> getMyReviews() {
+    public ListResult getMyReviews(PageRequest pageRequest) {
         log.info("getMyReviews()....");
 
         Optional<String> currentUsername = SecurityUtil.getCurrentUsername();
         if (currentUsername.isEmpty()) throw new EntityNotFoundException("Member not found");
 
-        return reviewRepository.findReviewsDtoListByMember(currentUsername.get());
+        PageImpl<ReviewDetailDto> result = reviewRepository.findReviewsDtoListByMember(pageRequest, currentUsername.get());
+        return new ListResult(result.getTotalElements(), result.getContent());
     }
 }
