@@ -66,8 +66,9 @@ public class KakaoLoginService {
 
         // DB에 중복된 이메일이 있는지 확인
         Member kakaouser = memberRepository.findByEmail(email).orElse(null);
-
         log.info("findByEmail:{}", kakaouser);
+
+        HashMap<String, String> map = new HashMap<>();
         // DB에 없을 경우 카카오 정보로 회원가입
         if (kakaouser == null) {
             Member member = new Member();
@@ -78,12 +79,14 @@ public class KakaoLoginService {
             member.setImgName("profill.png");
             member.setKakaoYn("Y");
 
-            memberRepository.save(member);
+            Member save = memberRepository.save(member);
+            log.info("Member save in:{}", save.getId());
             log.info("sign in:{}", member);
+            map.put("tel", "false");
         }
 
         log.info("tel:{}");
-        HashMap<String, String> map = new HashMap<>();
+
         if (kakaouser.getTel() == null) {
             map.put("tel", "false");
         } else {
@@ -99,8 +102,6 @@ public class KakaoLoginService {
 
         map.put("jwt", tokenProvider.createToken(authentication)); // Jwt 토큰 생성
 
-        HttpHeaders httpHeaders = new HttpHeaders(); // response header 저장
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + map.get("jwt"));
         return map;
     }
 
