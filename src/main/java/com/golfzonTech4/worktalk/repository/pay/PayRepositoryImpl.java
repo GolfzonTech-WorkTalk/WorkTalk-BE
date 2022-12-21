@@ -144,7 +144,7 @@ public class PayRepositoryImpl implements PayRepositoryCustom {
         }
         return pay.payStatus.eq(paymentStatus)
                 .and(pay.reservation.reserveStatus.ne(ReserveStatus.CANCELED_BY_HOST)
-                        .and(pay.reservation.reserveStatus.ne(ReserveStatus.CANCELED_BY_HOST)));
+                        .and(pay.reservation.reserveStatus.ne(ReserveStatus.CANCELED_BY_USER)));
     }
 
     static BooleanExpression eqRoom(String roomName) {
