@@ -48,7 +48,7 @@ public class KakaoLoginService {
 
     @Transactional
     public Map<String, String> kakaoLogin(String code) throws JsonProcessingException {
-
+        log.info("KakaoLoginService:kakaoLogin{}", code);
         KakaoUserInfoDto userInfo = getUserInfo(code);
         Long kakaoId = userInfo.getId();
         String email = userInfo.getEmail();
@@ -63,6 +63,7 @@ public class KakaoLoginService {
         // DB에 중복된 이메일이 있는지 확인
         Member kakaouser = memberRepository.findByEmail(email).orElse(null);
 
+        log.info("findByEmail:{}", kakaouser);
         // DB에 없을 경우 카카오 정보로 회원가입
         if (kakaouser == null) {
             Member member = new Member();
@@ -74,14 +75,17 @@ public class KakaoLoginService {
             member.setKakaoYn("Y");
 
             memberRepository.save(member);
-
+            log.info("sign in:{}", member);
         }
+
+        log.info("tel:{}");
         HashMap<String, String> map = new HashMap<>();
         if (kakaouser.getTel() == null) {
             map.put("tel", "false");
         } else {
             map.put("tel", "true");
         }
+
         //로그인 처리
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password); // 토큰 생성

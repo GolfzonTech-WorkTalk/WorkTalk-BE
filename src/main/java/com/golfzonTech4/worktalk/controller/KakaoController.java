@@ -43,6 +43,7 @@ public class KakaoController {
     @GetMapping("/user/kakao/callback")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // 카카오 서버로부터 받은 인가 코드, JWT 토큰
+        log.info("kakaoLogin:{}", code);
         Map<String, String> result = kakaoLoginService.kakaoLogin(code);
         HttpHeaders headers = new HttpHeaders();
 
