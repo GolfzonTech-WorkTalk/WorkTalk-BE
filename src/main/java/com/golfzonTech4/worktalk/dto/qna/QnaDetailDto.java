@@ -30,6 +30,8 @@ public class QnaDetailDto {
 
     private String spaceName;
 
+    private String writer;
+
     public QnaDetailDto(Long qnaId, Long spaceId, Long memberId, QnaType type, String content, LocalDateTime lastModifiedDate,
                         Long qnaCommentId, String qnacomment, LocalDateTime qclastModifiedDate) {
         this.qnaId = qnaId;
@@ -58,4 +60,19 @@ public class QnaDetailDto {
         this.spaceName = spaceName;
     }
 
+    @QueryProjection
+    public QnaDetailDto(Long qnaId, Long spaceId, Long memberId, QnaType type, String content, LocalDateTime lastModifiedDate,
+                        Long qnaCommentId, String qnacomment, LocalDateTime qclastModifiedDate, String spaceName, String writer) {
+        this.qnaId = qnaId;
+        this.spaceId = spaceId;
+        this.memberId = memberId;
+        this.type = type;
+        this.content = content;
+        this.lastModifiedDate = lastModifiedDate;
+        this.qnaCommentId = qnaCommentId;
+        this.qnacomment = qnacomment;
+        this.qclastModifiedDate = qclastModifiedDate;
+        this.spaceName = spaceName;
+        this.writer = writer;
+    }
 }

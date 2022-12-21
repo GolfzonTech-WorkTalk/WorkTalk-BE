@@ -4,7 +4,6 @@ import com.golfzonTech4.worktalk.dto.review.QReviewDetailDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewDetailDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewPagingDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -18,7 +17,6 @@ import static com.golfzonTech4.worktalk.domain.QReservation.reservation;
 import static com.golfzonTech4.worktalk.domain.QReview.review;
 import static com.golfzonTech4.worktalk.domain.QRoom.room;
 import static com.golfzonTech4.worktalk.domain.QSpace.space;
-import static com.querydsl.core.types.dsl.Expressions.asString;
 
 @Slf4j
 public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
