@@ -45,13 +45,16 @@ public class KakaoController {
         // 카카오 서버로부터 받은 인가 코드, JWT 토큰
         Map<String, String> result = kakaoLoginService.kakaoLogin(code);
         HttpHeaders headers = new HttpHeaders();
+
         String jwt = result.get("jwt");
         String tel = result.get("tel");
+
         headers.setLocation(URI.create("https://worktalk.link/login?token=" + jwt + "&tel=" + tel));
         headers.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         log.info("headers:{}", headers);
-        log.info("jwt:{}", result.get("jwt"));
+        log.info("jwt:{}", jwt);
+        log.info("jwt:{}", tel);
         return new ResponseEntity<>(new TokenDto(jwt), headers, HttpStatus.FOUND);
     }
 

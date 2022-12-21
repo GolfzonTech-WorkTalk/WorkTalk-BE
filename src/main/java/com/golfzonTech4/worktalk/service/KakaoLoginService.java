@@ -3,6 +3,7 @@ package com.golfzonTech4.worktalk.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.golfzonTech4.worktalk.domain.Member;
 import com.golfzonTech4.worktalk.dto.member.KakaoUserInfoDto;
+import com.golfzonTech4.worktalk.jwt.JwtFilter;
 import com.golfzonTech4.worktalk.jwt.TokenProvider;
 import com.golfzonTech4.worktalk.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,6 @@ public class KakaoLoginService {
         // DB에 중복된 이메일이 있는지 확인
         Member kakaouser = memberRepository.findByEmail(email).orElse(null);
 
-        HashMap<String, String> map = new HashMap<>();
-
         // DB에 없을 경우 카카오 정보로 회원가입
         if (kakaouser == null) {
             Member member = new Member();
@@ -76,14 +75,13 @@ public class KakaoLoginService {
 
             memberRepository.save(member);
 
-            map.put("tel", "false");
         }
+        HashMap<String, String> map = new HashMap<>();
         if (kakaouser.getTel() == null) {
             map.put("tel", "false");
         } else {
             map.put("tel", "true");
         }
-
         //로그인 처리
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password); // 토큰 생성
@@ -93,6 +91,8 @@ public class KakaoLoginService {
 
         map.put("jwt", tokenProvider.createToken(authentication)); // Jwt 토큰 생성
 
+        HttpHeaders httpHeaders = new HttpHeaders(); // response header 저장
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + map.get("jwt"));
         return map;
     }
 
