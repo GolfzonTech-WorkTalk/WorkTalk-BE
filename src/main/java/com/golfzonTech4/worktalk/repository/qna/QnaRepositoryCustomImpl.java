@@ -45,7 +45,8 @@ public class QnaRepositoryCustomImpl implements QnaRepositoryCustom {
                                 qnaComment.qnaCommentId,
                                 qnaComment.qnacomment,
                                 qnaComment.lastModifiedDate,
-                                space.spaceName)
+                                space.spaceName,
+                                qna.member.name)
                 ).distinct()
                 .from(qna)
                 .leftJoin(qnaComment).on(qna.qnaId.eq(qnaComment.qna.qnaId))
@@ -119,7 +120,8 @@ public class QnaRepositoryCustomImpl implements QnaRepositoryCustom {
                                 qnaComment.qnaCommentId,
                                 qnaComment.qnacomment,
                                 qnaComment.lastModifiedDate,
-                                space.spaceName)
+                                space.spaceName,
+                                qna.member.name)
                 ).distinct()
                 .from(qna)
                 .leftJoin(qnaComment).on(qna.qnaId.eq(qnaComment.qna.qnaId))
