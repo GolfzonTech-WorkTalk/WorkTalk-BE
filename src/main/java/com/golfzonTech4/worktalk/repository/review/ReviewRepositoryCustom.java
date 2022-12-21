@@ -6,8 +6,8 @@ import org.springframework.data.domain.PageRequest;
 
 public interface ReviewRepositoryCustom {
 
-    PageImpl<ReviewDetailDto> findReviewsDtoListBySpaceId(PageRequest pageRequest, Long spaceId);
+    PageImpl<ReviewDetailDto> findReviewsDtoListBySpaceId(PageRequest pageRequest, Long spaceId); //사무공간 상세페이지 후기 리스트
 
-    PageImpl<ReviewDetailDto> findReviewsDtoListByMember(PageRequest pageRequest, String name);//접속자의 후기 리스트
+    PageImpl<ReviewDetailDto> findReviewsDtoListByMember(PageRequest pageRequest, String name); //접속자의 후기 리스트
 
 }
