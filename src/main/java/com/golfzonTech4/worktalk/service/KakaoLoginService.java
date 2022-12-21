@@ -49,7 +49,9 @@ public class KakaoLoginService {
     @Transactional
     public Map<String, String> kakaoLogin(String code) throws JsonProcessingException {
         log.info("KakaoLoginService:kakaoLogin{}", code);
+
         KakaoUserInfoDto userInfo = getUserInfo(code);
+        log.info("userInfo:{}", userInfo);
         Long kakaoId = userInfo.getId();
         String email = userInfo.getEmail();
         String nickname = userInfo.getNickname();
@@ -59,6 +61,8 @@ public class KakaoLoginService {
 
         // 패스워드 = 카카오 id
         String password = String.valueOf(kakaoId);
+        log.info("name:{}", name);
+        log.info("password:{}", password);
 
         // DB에 중복된 이메일이 있는지 확인
         Member kakaouser = memberRepository.findByEmail(email).orElse(null);
