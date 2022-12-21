@@ -47,7 +47,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         Member result = queryFactory
                 .select(member)
                 .from(member)
-                .where(member.KakaoYn.eq("N"))
+                .where(member.KakaoYn.eq("N"), member.email.eq(email))
                 .fetchOne();
         return Optional.ofNullable(result);
     }
