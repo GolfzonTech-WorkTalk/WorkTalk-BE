@@ -11,6 +11,7 @@ import com.golfzonTech4.worktalk.dto.reservation.ReserveSimpleDto;
 import com.golfzonTech4.worktalk.exception.NotFoundMemberException;
 import com.golfzonTech4.worktalk.repository.ListResult;
 import com.golfzonTech4.worktalk.repository.member.MemberRepository;
+import com.golfzonTech4.worktalk.repository.pay.PayRepository;
 import com.golfzonTech4.worktalk.repository.reservation.ReservationRepository;
 import com.golfzonTech4.worktalk.repository.reservation.ReservationSimpleRepository;
 import com.golfzonTech4.worktalk.repository.room.RoomRepository;
@@ -45,6 +46,8 @@ public class ReservationService {
     private final TempRedisReservationService redisReservationService;
     private final MileageService mileageService;
     private final PayService payService;
+
+    private final PayRepository payRepository;
     private final IamportConfig iamport;
 
     /**
@@ -267,6 +270,7 @@ public class ReservationService {
 
     /**
      * 결제 생태가 미결제인 예약 건에 대하여 예약 상태를 NOSHOW로 변경
+     * 마일리지 적립 예정 삭제
      */
     @Transactional
     public void changeToNoShow(Long reservedId) {
@@ -274,6 +278,8 @@ public class ReservationService {
         Reservation findReserve = reservationRepository.findById(reservedId).get();
         if (findReserve.getPaid() == 0) {
             findReserve.setReserveStatus(ReserveStatus.NOSHOW);
+            List<PayInsertDto> result = payRepository.findAlByReserveId(findReserve.getReserveId());
+            if (!result.isEmpty()) mileageService.cancelSave(result.get(0).getPayId());
         }
     }
 
