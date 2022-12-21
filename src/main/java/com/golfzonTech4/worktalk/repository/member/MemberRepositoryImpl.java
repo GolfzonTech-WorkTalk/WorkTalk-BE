@@ -24,7 +24,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
     public List<MemberDto> findDeactMemeber(MemberSerachDto dto) {
         return queryFactory
-                .select(new QMemberDto(member.id, member.email, member.name, member.tel, member.memberType, member.activated))
+                .select(new QMemberDto(member.id, member.email, member.name, member.tel, member.memberType, member.activated, member.KakaoYn))
                 .from(member)
                 .where(eqActivated(dto.getActivated()), member.memberType.eq(MemberType.ROLE_HOST))
                 .fetch();
