@@ -91,8 +91,9 @@ public class MemberService {
         log.info("leave : {}", memberId);
         String name = SecurityUtil.getCurrentUsername().get();
         String role = SecurityUtil.getCurrentUserRole().get();
+        log.info("role : {}", role);
         if (role.equals(MemberType.ROLE_USER)) {
-            ListResult findReserves = reservationSimpleRepository.findAllByUser(name, 0, null, ReserveStatus.BOOKED);
+            ListResult findReserves = reservationSimpleRepository.findAllByUser(name, null, null, ReserveStatus.BOOKED);
             if (findReserves.getCount() != 0) throw new IllegalStateException("진행 중인 예약/결제건이 있는 회원입니다.");
         } else if (role.equals(MemberType.ROLE_HOST)) {
             List<ReserveSimpleDto> findReserves = reservationSimpleRepository.findAllByHost(name, LocalDate.now());

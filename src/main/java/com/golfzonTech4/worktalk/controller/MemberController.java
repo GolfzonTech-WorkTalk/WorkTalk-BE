@@ -96,8 +96,8 @@ public class MemberController {
     @PostMapping("/member/leave/{memberId}")
     public ResponseEntity<Long> leave(
             @PathVariable(value = "memberId") Long memberId) {
-        log.info("update: {}", memberId);
-        // 예약/ 결제건이 있을 경우 예외 발생
+        log.info("leave: {}", memberId);
+        // 예약이나 결제건이 있을 경우 예외 발생
         memberService.leave(memberId);
         return ResponseEntity.ok().build();
     }
