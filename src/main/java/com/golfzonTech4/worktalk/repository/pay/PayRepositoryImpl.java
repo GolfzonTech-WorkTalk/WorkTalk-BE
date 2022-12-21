@@ -139,8 +139,12 @@ public class PayRepositoryImpl implements PayRepositoryCustom {
     static BooleanExpression eqPaymentStatus(PaymentStatus paymentStatus) {
         if (paymentStatus == null) {
             return null;
+        } else if (paymentStatus == PaymentStatus.REFUND) {
+            return pay.payStatus.eq(paymentStatus);
         }
-        return pay.payStatus.eq(paymentStatus);
+        return pay.payStatus.eq(paymentStatus)
+                .and(pay.reservation.reserveStatus.ne(ReserveStatus.CANCELED_BY_HOST)
+                        .and(pay.reservation.reserveStatus.ne(ReserveStatus.CANCELED_BY_HOST)));
     }
 
     static BooleanExpression eqRoom(String roomName) {
@@ -151,7 +155,7 @@ public class PayRepositoryImpl implements PayRepositoryCustom {
     }
 
     static BooleanExpression eqSpaceType(Integer spaceType) {
-        if (spaceType == null ) {
+        if (spaceType == null) {
             return null;
         }
         return space.spaceType.eq(spaceType);
