@@ -4,6 +4,7 @@ import com.golfzonTech4.worktalk.dto.review.QReviewDetailDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewDetailDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewPagingDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageImpl;
@@ -17,6 +18,7 @@ import static com.golfzonTech4.worktalk.domain.QReservation.reservation;
 import static com.golfzonTech4.worktalk.domain.QReview.review;
 import static com.golfzonTech4.worktalk.domain.QRoom.room;
 import static com.golfzonTech4.worktalk.domain.QSpace.space;
+import static com.querydsl.core.types.dsl.Expressions.asString;
 
 @Slf4j
 public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
@@ -109,6 +111,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                                 review.reviewId,
                                 reservation.reserveId,
                                 review.member.id,
+                                review.member.name,
                                 review.content,
                                 review.lastModifiedDate,
                                 review.grade,
@@ -121,7 +124,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .leftJoin(reservation).on(reservation.reserveId.eq(review.reservation.reserveId))
                 .leftJoin(room).on(room.roomId.eq(reservation.room.roomId))
                 .leftJoin(space).on(space.spaceId.eq(room.space.spaceId))
-                .leftJoin(member).on(member.id.eq(review.member.id))
+                .leftJoin(member).on(member.id.eq(space.member.id))
                 .where(member.name.eq(dto.getName()), eqSapceName(dto.getSpaceName()))
                 .orderBy(review.reviewId.desc())
                 .offset(pageRequest.getOffset())
@@ -133,7 +136,8 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .from(review)
                 .leftJoin(reservation).on(reservation.reserveId.eq(review.reservation.reserveId))
                 .leftJoin(room).on(room.roomId.eq(reservation.room.roomId))
-                .leftJoin(member).on(member.id.eq(review.member.id))
+                .leftJoin(space).on(space.spaceId.eq(room.space.spaceId))
+                .leftJoin(member).on(member.id.eq(space.member.id))
                 .where(member.name.eq(dto.getName()), eqSapceName(dto.getSpaceName()))
                 .fetchOne();
 
