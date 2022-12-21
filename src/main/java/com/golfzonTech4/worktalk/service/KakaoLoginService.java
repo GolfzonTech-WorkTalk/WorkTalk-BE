@@ -3,7 +3,6 @@ package com.golfzonTech4.worktalk.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.golfzonTech4.worktalk.domain.Member;
 import com.golfzonTech4.worktalk.dto.member.KakaoUserInfoDto;
-import com.golfzonTech4.worktalk.jwt.JwtFilter;
 import com.golfzonTech4.worktalk.jwt.TokenProvider;
 import com.golfzonTech4.worktalk.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -86,11 +85,12 @@ public class KakaoLoginService {
         }
 
         log.info("tel:{}");
-
-        if (kakaouser.getTel() == null) {
-            map.put("tel", "false");
-        } else {
-            map.put("tel", "true");
+        if (kakaouser != null) {
+            if (kakaouser.getTel() == null) {
+                map.put("tel", "false");
+            } else {
+                map.put("tel", "true");
+            }
         }
 
         //로그인 처리
