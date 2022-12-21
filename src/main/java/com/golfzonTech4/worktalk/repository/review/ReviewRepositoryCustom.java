@@ -8,4 +8,6 @@ public interface ReviewRepositoryCustom {
 
     PageImpl<ReviewDetailDto> findReviewsDtoListBySpaceId(PageRequest pageRequest, Long spaceId);
 
+    PageImpl<ReviewDetailDto> findReviewsDtoListByMember(PageRequest pageRequest, String name);//접속자의 후기 리스트
+
 }

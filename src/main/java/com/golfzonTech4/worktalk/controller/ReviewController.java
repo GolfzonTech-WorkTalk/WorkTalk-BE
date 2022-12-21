@@ -96,7 +96,8 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @GetMapping("/myreviews")
-    public ResponseEntity myReviewPage() {
-        return ResponseEntity.ok(reviewService.getMyReviews());
+    public ResponseEntity<ListResult> myReviewPage(@ModelAttribute ReviewPagingDto dto) {
+        PageRequest pageRequest = PageRequest.of(dto.getPageNum(), 10);
+        return ResponseEntity.ok(reviewService.getMyReviews(pageRequest));
     }
 }
