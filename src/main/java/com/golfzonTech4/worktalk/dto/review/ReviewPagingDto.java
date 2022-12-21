@@ -12,4 +12,8 @@ public class ReviewPagingDto {
     private Long spaceId;
 
     private int pageNum;
+
+    private String spaceName;
+
+    private String name;
 }

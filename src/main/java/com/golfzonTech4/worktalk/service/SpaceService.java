@@ -197,4 +197,10 @@ public class SpaceService {
 
         return (dto != null) ? true : false;
     }
+
+    public List<HostSpaceDto> findSpaces() {
+        log.info("findSpaces: {}");
+        String name = SecurityUtil.getCurrentUsername().get();
+        return spaceRepository.getSpacesByHost(name);
+    }
 }

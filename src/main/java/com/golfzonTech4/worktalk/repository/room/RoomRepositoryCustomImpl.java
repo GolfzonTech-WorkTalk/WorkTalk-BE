@@ -16,12 +16,12 @@ import static com.golfzonTech4.worktalk.domain.QRoom.room;
 import static com.golfzonTech4.worktalk.domain.QRoomImg.roomImg;
 
 @Slf4j
-public class RoomRepositoryCustomImpl implements RoomRepositoryCustom{
+public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
 
     private JPAQueryFactory queryFactory; // 동적 쿼리 생성 위한 클래스
 
     // JPAQueryFactory 생성자로 EntityManager 넣어줌
-    public RoomRepositoryCustomImpl(EntityManager em){
+    public RoomRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
@@ -88,4 +88,5 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom{
 
         return content;
     }
+
 }

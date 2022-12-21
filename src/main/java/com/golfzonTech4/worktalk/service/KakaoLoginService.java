@@ -3,7 +3,6 @@ package com.golfzonTech4.worktalk.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.golfzonTech4.worktalk.domain.Member;
 import com.golfzonTech4.worktalk.dto.member.KakaoUserInfoDto;
-import com.golfzonTech4.worktalk.jwt.JwtFilter;
 import com.golfzonTech4.worktalk.jwt.TokenProvider;
 import com.golfzonTech4.worktalk.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.golfzonTech4.worktalk.domain.MemberType.ROLE_USER;
 
 
@@ -44,7 +46,7 @@ public class KakaoLoginService {
 
 
     @Transactional
-    public String kakaoLogin(String code) throws JsonProcessingException {
+    public Map<String, String> kakaoLogin(String code) throws JsonProcessingException {
 
         KakaoUserInfoDto userInfo = getUserInfo(code);
         Long kakaoId = userInfo.getId();
@@ -60,6 +62,8 @@ public class KakaoLoginService {
         // DB에 중복된 이메일이 있는지 확인
         Member kakaouser = memberRepository.findByEmail(email).orElse(null);
 
+        HashMap<String, String> map = new HashMap<>();
+
         // DB에 없을 경우 카카오 정보로 회원가입
         if (kakaouser == null) {
             Member member = new Member();
@@ -72,7 +76,14 @@ public class KakaoLoginService {
 
             memberRepository.save(member);
 
+            map.put("tel", "false");
         }
+        if (kakaouser.getTel() == null) {
+            map.put("tel", "false");
+        } else {
+            map.put("tel", "true");
+        }
+
         //로그인 처리
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password); // 토큰 생성
@@ -80,11 +91,9 @@ public class KakaoLoginService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication); // Authentication Token => context 저장
 
-        String jwt = tokenProvider.createToken(authentication); // Jwt 토큰 생성
+        map.put("jwt", tokenProvider.createToken(authentication)); // Jwt 토큰 생성
 
-        HttpHeaders httpHeaders = new HttpHeaders(); // response header 저장
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return jwt;
+        return map;
     }
 
     private String getAccessToken(String code) {
