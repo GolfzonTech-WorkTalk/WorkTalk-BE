@@ -72,7 +72,7 @@ public class MileageRepositoryImpl implements MileageRepositoryCustom{
                 .from(mileage)
                 .innerJoin(pay).on(mileage.pay.payId.eq(pay.payId))
                 .innerJoin(reservation).on(pay.reservation.reserveId.eq(reservation.reserveId))
-                .where(mileage.status.eq(Mileage_status.TO_BE_SAVED))
+                .where(mileage.status.eq(Mileage_status.TO_BE_SAVED), reservation.reserveId.eq(reserveId))
                 .fetchOne();
         return Optional.ofNullable(findMileage);
     }

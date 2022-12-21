@@ -46,6 +46,7 @@ public class MemberService {
         member.setPw(dto.getPw());
         member.setName(dto.getName());
         member.setTel(dto.getTel());
+        member.setKakaoYn("N");
 
         // request의 role 값에 따라 회원 구분 및 활성화 여부를 다르게 설정
         if (dto.getRole() == 0) {
@@ -108,10 +109,9 @@ public class MemberService {
      */
     public void findDuplicatesName(Member member) {
         log.info("findDuplicatesName : {}", member);
+        if (member.getName().trim().isEmpty())  throw new IllegalArgumentException("잘못된 입력값입니다.");
         Optional<Member> result = memberRepository.findByName(member.getName());
-        if (!result.isEmpty()) {
-            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
-        }
+        if (!result.isEmpty()) throw new IllegalArgumentException("이미 존재하는 회원입니다.");
     }
 
     /**
