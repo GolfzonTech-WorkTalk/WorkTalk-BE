@@ -120,6 +120,7 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .from(review)
                 .leftJoin(reservation).on(reservation.reserveId.eq(review.reservation.reserveId))
                 .leftJoin(room).on(room.roomId.eq(reservation.room.roomId))
+                .leftJoin(space).on(space.spaceId.eq(room.space.spaceId))
                 .leftJoin(member).on(member.id.eq(review.member.id))
                 .where(member.name.eq(dto.getName()), eqSapceName(dto.getSpaceName()))
                 .orderBy(review.reviewId.desc())
