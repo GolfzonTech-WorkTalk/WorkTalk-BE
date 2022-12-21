@@ -45,7 +45,7 @@ public class KakaoController {
         String jwt = kakaoLoginService.kakaoLogin(code);
         HttpHeaders headers = new HttpHeaders();
 
-        headers.setLocation(URI.create("http://3.36.148.54/login?token=" + jwt));
+        headers.setLocation(URI.create("https://worktalk.link/login?token=" + jwt));
         headers.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         log.info("headers:{}", headers);
