@@ -1,12 +1,14 @@
 package com.golfzonTech4.worktalk.controller;
 
-import com.golfzonTech4.worktalk.domain.Qna;
+import com.golfzonTech4.worktalk.domain.Review;
 import com.golfzonTech4.worktalk.dto.review.ReviewInsertDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewPagingDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewUpdateDto;
 import com.golfzonTech4.worktalk.repository.ListResult;
 import com.golfzonTech4.worktalk.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,7 +38,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/reviewCreate")
-    public ResponseEntity<Qna> createReview(@Valid @RequestBody ReviewInsertDto dto) {
+    public ResponseEntity<Review> createReview(@Valid @RequestBody ReviewInsertDto dto) {
 
         reviewService.createReview(dto);
 
@@ -52,7 +54,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @PostMapping("/reviewUpdate/{reviewId}")
-    public ResponseEntity<Qna> updateReview(@Valid @RequestBody ReviewUpdateDto dto, @PathVariable Long reviewId) {
+    public ResponseEntity<Review> updateReview(@Valid @RequestBody ReviewUpdateDto dto, @PathVariable Long reviewId) {
 
         reviewService.updateReview(reviewId, dto);
 
@@ -100,4 +102,20 @@ public class ReviewController {
         PageRequest pageRequest = PageRequest.of(dto.getPageNum(), 10);
         return ResponseEntity.ok(reviewService.getMyReviews(pageRequest));
     }
+
+    @Operation(summary = "호스트의 모든 사무공간 후기 글 목록 조회 요청",
+            description = "호스트의 후기관리페이지에서 호스트가 소유한 모든 공간의 후기 목록을 조회하고 후기타입과 사무공간이름별로 소팅합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = ListResult.class))),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @GetMapping("/manageHostReview")
+    public ResponseEntity<ListResult> reviewListByHostSpace(@ModelAttribute ReviewPagingDto dto) {
+        PageRequest pageRequest = PageRequest.of(dto.getPageNum(), 10);
+        return ResponseEntity.ok(reviewService.getReviewHostManagePage(pageRequest, dto));
+    }
+
 }

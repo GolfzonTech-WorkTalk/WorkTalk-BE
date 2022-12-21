@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.util.Map;
 
 @Tag(name = "KakaoController", description = "카카오 로그인 api입니다.")
 @RestController
@@ -42,14 +43,15 @@ public class KakaoController {
     @GetMapping("/user/kakao/callback")
     public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // 카카오 서버로부터 받은 인가 코드, JWT 토큰
-        String jwt = kakaoLoginService.kakaoLogin(code);
+        Map<String, String> result = kakaoLoginService.kakaoLogin(code);
         HttpHeaders headers = new HttpHeaders();
-
-        headers.setLocation(URI.create("https://worktalk.link/login?token=" + jwt));
+        String jwt = result.get("jwt");
+        String tel = result.get("tel");
+        headers.setLocation(URI.create("https://worktalk.link/login?token=" + jwt + "&tel=" + tel));
         headers.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         log.info("headers:{}", headers);
-        log.info("jwt:{}", jwt);
+        log.info("jwt:{}", result.get("jwt"));
         return new ResponseEntity<>(new TokenDto(jwt), headers, HttpStatus.FOUND);
     }
 

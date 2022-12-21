@@ -33,6 +33,7 @@ public class ReviewDetailDto {
 
     private RoomType roomType;
 
+    @QueryProjection
     public ReviewDetailDto(Long reviewId, Long reservationId, Long memberId, String content, LocalDateTime lastModifiedDate, Double grade, String spaceName, String roomName
             , RoomType roomType) {
         this.reviewId = reviewId;
@@ -55,5 +56,19 @@ public class ReviewDetailDto {
         this.content = content;
         this.lastModifiedDate = lastModifiedDate;
         this.grade = grade;
+    }
+
+    @QueryProjection
+    public ReviewDetailDto(Long reviewId, Long reservationId, Long memberId, String writer, String content, LocalDateTime lastModifiedDate, Double grade, String spaceName, String roomName, RoomType roomType) {
+        this.reviewId = reviewId;
+        this.reservationId = reservationId;
+        this.memberId = memberId;
+        this.writer = writer;
+        this.content = content;
+        this.lastModifiedDate = lastModifiedDate;
+        this.grade = grade;
+        this.spaceName = spaceName;
+        this.roomName = roomName;
+        this.roomType = roomType;
     }
 }

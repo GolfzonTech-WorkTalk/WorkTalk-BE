@@ -172,4 +172,17 @@ public class SpaceController {
         return new ResponseEntity<Object>(result, HttpStatus.OK);
     }
 
+    @Operation(summary = "호스트가 소유한 세부 사무공간명 목록 조회 요청", description = "해당 호스트가 소유한 세부 사무공간명 목록을 출력합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+    @GetMapping("/getHostSpaceNames")
+    public ResponseEntity spaceNameListByHost() {
+        log.info("spaceNameListByHost");
+        return ResponseEntity.ok(spaceService.findSpaces());
+    }
+
 }

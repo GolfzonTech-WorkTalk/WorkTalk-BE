@@ -5,6 +5,7 @@ import com.golfzonTech4.worktalk.domain.Reservation;
 import com.golfzonTech4.worktalk.domain.Review;
 import com.golfzonTech4.worktalk.dto.review.ReviewDetailDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewInsertDto;
+import com.golfzonTech4.worktalk.dto.review.ReviewPagingDto;
 import com.golfzonTech4.worktalk.dto.review.ReviewUpdateDto;
 import com.golfzonTech4.worktalk.repository.ListResult;
 import com.golfzonTech4.worktalk.repository.reservation.ReservationRepository;
@@ -96,6 +97,15 @@ public class ReviewService {
         if (currentUsername.isEmpty()) throw new EntityNotFoundException("Member not found");
 
         PageImpl<ReviewDetailDto> result = reviewRepository.findReviewsDtoListByMember(pageRequest, currentUsername.get());
+        return new ListResult(result.getTotalElements(), result.getContent());
+    }
+
+    public ListResult getReviewHostManagePage(PageRequest pageRequest, ReviewPagingDto dto) {
+        log.info("getReviewHostManagePage()....");
+        Optional<String> currentUsername = SecurityUtil.getCurrentUsername();
+        dto.setName(currentUsername.get());
+
+        PageImpl<ReviewDetailDto> result = reviewRepository.findReviewDtoListByHostSpace(pageRequest, dto);
         return new ListResult(result.getTotalElements(), result.getContent());
     }
 }
