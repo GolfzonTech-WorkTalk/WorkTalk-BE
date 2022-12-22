@@ -39,6 +39,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .leftJoin(penalty)
                 .on(member.id.eq(penalty.member.id))
                 .where(eqActivated(activated), member.memberType.eq(MemberType.ROLE_USER))
+                .distinct()
                 .fetch();
     }
 
