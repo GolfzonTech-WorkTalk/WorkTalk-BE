@@ -20,7 +20,7 @@ public class PenaltyRepositoryImpl implements PenaltyRepositoryCustom {
 
     public List<PenaltySearchDto> findPenalties() {
         log.info("findPenalties");
-        return queryFactory.select(new QPenaltySearchDto(
+        return queryFactory.selectDistinct(new QPenaltySearchDto(
                         penalty.penaltyId, penalty.penaltyReason, penalty.penaltyType, penalty.penaltyDate,
                         penalty.member.id, penalty.member.email, penalty.member.name, penalty.member.tel, penalty.member.memberType,
                         penalty.member.activated
