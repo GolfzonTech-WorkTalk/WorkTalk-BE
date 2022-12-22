@@ -36,7 +36,7 @@ public class CustomerCommentService {
         CustomerCenter findCcId = customerCenterRepository.findByCcId(dto.getCcId());
 
         CustomerComment customercommentToCreate = new CustomerComment();
-        BeanUtils.copyProperties(dto, customercommentToCreate);//나중에 수정하기
+        BeanUtils.copyProperties(dto, customercommentToCreate);
         customercommentToCreate.setCustomerCenter(findCcId);
 
         return  customerCommentRepository.save(customercommentToCreate);

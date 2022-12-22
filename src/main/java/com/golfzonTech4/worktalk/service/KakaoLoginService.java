@@ -77,15 +77,14 @@ public class KakaoLoginService {
             member.setMemberType(ROLE_USER);
             member.setImgName("profill.png");
             member.setKakaoYn("Y");
+            member.setActivated(1);
 
             Member save = memberRepository.save(member);
-            log.info("Member save in:{}", save.getId());
-            log.info("sign in:{}", member);
+
             map.put("tel", "false");
         }
 
-        log.info("tel:{}");
-        if (kakaouser != null) {
+        else if (kakaouser != null) {
             if (kakaouser.getTel() == null) {
                 map.put("tel", "false");
             } else {
@@ -100,7 +99,7 @@ public class KakaoLoginService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication); // Authentication Token => context 저장
 
-        map.put("jwt", tokenProvider.createToken(authentication)); // Jwt 토큰 생성
+        map.put("jwt", tokenProvider.createToken(authentication));
 
         return map;
     }
