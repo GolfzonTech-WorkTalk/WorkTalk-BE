@@ -30,11 +30,4 @@ public class SpaceImg {
         this.space = space;
     }
 
-    public void updateImg(String spaceImgUrl){
-        this.spaceImgUrl = spaceImgUrl;
-    }
-    public void deleteImg(String spaceImgUrl){
-        this.spaceImgUrl = spaceImgUrl;
-    }
-
 }

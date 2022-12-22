@@ -39,7 +39,7 @@ public class QnaCommentService {
         Qna findQnaId = qnaRepository.findByQnaId(dto.getQnaId());
 
         QnaComment qnacommentToCreate = new QnaComment();
-        BeanUtils.copyProperties(dto, qnacommentToCreate);//나중에 수정하기
+        BeanUtils.copyProperties(dto, qnacommentToCreate);
         qnacommentToCreate.setMember(findName);
         qnacommentToCreate.setQna(findQnaId);
 
