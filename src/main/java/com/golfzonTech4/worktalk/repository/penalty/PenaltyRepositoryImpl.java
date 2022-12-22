@@ -25,7 +25,6 @@ public class PenaltyRepositoryImpl implements PenaltyRepositoryCustom {
                         penalty.member.id, penalty.member.email, penalty.member.name, penalty.member.tel, penalty.member.memberType,
                         penalty.member.activated
                 ))
-                .distinct()
                 .from(penalty).fetch();
     }
 }
