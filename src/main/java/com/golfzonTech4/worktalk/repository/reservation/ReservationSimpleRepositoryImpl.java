@@ -142,6 +142,7 @@ public class ReservationSimpleRepositoryImpl implements ReservationSimpleReposit
     @Override
     public List<ReserveSimpleDto> findAllByTime() {
         log.info("findAllByTime");
+        LocalDate today = LocalDate.now();
         int hour = LocalDateTime.now().getHour() + 1; // 현재 시간에서 1시간을 뺀 값: 매 시간 30분에 조회되기에 시간만 비교하면됨.
         log.info("hour: {}", hour);
         // 예시: 12시 30분 조회 시 => 13시의 예약 데이터들을 조회.
@@ -150,9 +151,10 @@ public class ReservationSimpleRepositoryImpl implements ReservationSimpleReposit
                         reservation.member.id)
                 )
                 .from(reservation)
-                .where(reservation.bookDate.checkInTime.eq(hour) // 이용시간이 임박한 예약건 들 중
+                .where(reservation.bookDate.checkInTime.eq(hour)// 이용시간이 임박한 예약건 들 중
                         .and(reservation.paymentStatus.eq(PaymentStatus.PREPAID)) // 선결제 중
-                        .and(reservation.paid.eq(0))) // 결제가 되지 않은 예약
+                        .and(reservation.paid.eq(0))
+                        .and(reservation.bookDate.checkInDate.eq(today))) // 오늘 입실인 예약들에 한하여
                 .fetch();
 
         log.info("result.size() : {}", result.size());
