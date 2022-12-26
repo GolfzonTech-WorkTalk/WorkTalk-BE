@@ -153,6 +153,7 @@ public class ReservationSimpleRepositoryImpl implements ReservationSimpleReposit
                 .from(reservation)
                 .where(reservation.bookDate.checkInTime.eq(hour)// 이용시간이 임박한 예약건 들 중
                         .and(reservation.paymentStatus.eq(PaymentStatus.PREPAID)) // 선결제 중
+                        .and(reservation.reserveStatus.eq(ReserveStatus.BOOKED)) // 예약 진행중인
                         .and(reservation.paid.eq(0))
                         .and(reservation.bookDate.checkInDate.eq(today))) // 오늘 입실인 예약들에 한하여
                 .fetch();
